@@ -1,7 +1,6 @@
 package com.zinyakov;
 
 import java.util.List;
-import static com.zinyakov.StringToArrayFormatter.*;
 import static com.zinyakov.MatrixUtils.*;
 
 public class Main {
@@ -20,8 +19,8 @@ public class Main {
         try {
             OperationType operationType = operationTypeForArg(args[0]);
             // через list, так как было жутко лень преобразовывать двумерный list в двумерный массив
-            List<List<Integer>> firstMatrix = twoDimentionalArrayForArg(args[1]);
-            List<List<Integer>> secondMatrix = twoDimentionalArrayForArg(args[2]);
+            List<List<Integer>> firstMatrix = twoDimentionalMatrixForArg(args[1]);
+            List<List<Integer>> secondMatrix = twoDimentionalMatrixForArg(args[2]);
             String result = resultForOperation(operationType, firstMatrix, secondMatrix);
 
             System.out.println("first matrix");
@@ -54,9 +53,9 @@ public class Main {
             case ADD:
                 return additionForMatrixes(firstMatrix, secondMatrix);
             case MULTIPLY:
-                return "well done";
+                return "not implemented yet";
             case DETERMINE:
-                return "well done";
+                return "not implemented yet";
             default:
                 return HELP_MESSAGE;
         }

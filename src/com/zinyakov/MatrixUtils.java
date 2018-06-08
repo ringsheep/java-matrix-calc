@@ -2,8 +2,31 @@ package com.zinyakov;
 
 import java.util.ArrayList;
 import java.util.List;
+import static com.zinyakov.StringToArrayFormatter.*;
 
 public class MatrixUtils {
+
+    public static List<List<Integer>> twoDimentionalMatrixForArg(String arg) {
+        List<List<Integer>> array = twoDimentionalArrayForArg(arg);
+
+        // нормализуем матрицу, заменяя пустые места в строках нулями
+        int maxLength = array.get(0).size();
+        for (List<Integer> row : array) {
+            if (row.size() > maxLength) {
+                maxLength = row.size();
+            }
+        }
+        for (List<Integer> row : array) {
+            if (row.size() < maxLength) {
+                int numberOfCellsToAdd = maxLength - row.size();
+                for (int i = 0; i < numberOfCellsToAdd; i++) {
+                    row.add(0);
+                }
+            }
+        }
+
+        return array;
+    }
 
     public static String additionForMatrixes(List<List<Integer>> firstMatrix, List<List<Integer>> secondMatrix) {
         if (firstMatrix.size() != secondMatrix.size()) {
