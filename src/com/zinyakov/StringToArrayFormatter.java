@@ -14,6 +14,9 @@ public class StringToArrayFormatter {
     public static List<List<Integer>> twoDimentionalArrayForArg(String arg) {
         List<List<Integer>> resultList = new ArrayList<>();
         String[] stringArray = arrayFromString(arg);
+        if (stringArray.length == 0) {
+            return new ArrayList<>();
+        }
 
         for (String string : stringArray) {
             List<Integer> row = oneDimentionalArrayForArg(string);

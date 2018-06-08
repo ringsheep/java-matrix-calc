@@ -8,6 +8,9 @@ public class MatrixUtils {
 
     public static List<List<Integer>> twoDimentionalMatrixForArg(String arg) {
         List<List<Integer>> array = twoDimentionalArrayForArg(arg);
+        if (array.isEmpty()) {
+            return new ArrayList<>();
+        }
 
         // нормализуем матрицу, заменяя пустые места в строках нулями
         int maxLength = array.get(0).size();
@@ -29,6 +32,9 @@ public class MatrixUtils {
     }
 
     public static String additionForMatrixes(List<List<Integer>> firstMatrix, List<List<Integer>> secondMatrix) {
+        if (firstMatrix.isEmpty() || secondMatrix.isEmpty()) {
+            return "both matrixs must not be empty";
+        }
         if (firstMatrix.size() != secondMatrix.size()) {
             return "first and second matrixes must have same number of rows";
         }

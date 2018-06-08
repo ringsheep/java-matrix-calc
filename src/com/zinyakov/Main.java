@@ -1,5 +1,6 @@
 package com.zinyakov;
 
+import java.util.ArrayList;
 import java.util.List;
 import static com.zinyakov.MatrixUtils.*;
 
@@ -16,18 +17,22 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        try {
-            OperationType operationType = operationTypeForArg(args[0]);
-            // через list, так как было жутко лень преобразовывать двумерный list в двумерный массив
-            List<List<Integer>> firstMatrix = twoDimentionalMatrixForArg(args[1]);
-            List<List<Integer>> secondMatrix = twoDimentionalMatrixForArg(args[2]);
-            String result = resultForOperation(operationType, firstMatrix, secondMatrix);
+        List<List<Integer>> firstMatrix = new ArrayList<>();
+        List<List<Integer>> secondMatrix = new ArrayList<>();
+        OperationType operationType = OperationType.NONE;
 
-            System.out.println("first matrix");
-            System.out.println(matrixView(firstMatrix));
-            System.out.println("second matrix");
-            System.out.println(matrixView(secondMatrix));
-            System.out.println("result");
+        try {
+            if (args.length >= 1) {
+                operationType = operationTypeForArg(args[0]);
+            }
+            if (args.length >= 2) {
+                firstMatrix = twoDimentionalMatrixForArg(args[1]);
+            }
+            if (args.length >= 3) {
+                secondMatrix = twoDimentionalMatrixForArg(args[2]);
+            }
+
+            String result = resultForOperation(operationType, firstMatrix, secondMatrix);
             System.out.println(result);
 
         } catch(Exception e) {
@@ -51,7 +56,7 @@ public class Main {
     private static String resultForOperation(OperationType type, List<List<Integer>> firstMatrix, List<List<Integer>> secondMatrix) {
         switch (type) {
             case ADD:
-                return additionForMatrixes(firstMatrix, secondMatrix);
+                return additionResult(firstMatrix, secondMatrix);
             case MULTIPLY:
                 return "not implemented yet";
             case DETERMINE:
@@ -59,6 +64,16 @@ public class Main {
             default:
                 return HELP_MESSAGE;
         }
+    }
+
+    private static String additionResult(List<List<Integer>> firstMatrix, List<List<Integer>> secondMatrix) {
+        String result = "first matrix" + "\n"
+                + matrixView(firstMatrix) + "\n"
+                + "second matrix" + "\n"
+                + matrixView(secondMatrix) + "\n"
+                + "result" + "\n"
+                + additionForMatrixes(firstMatrix, secondMatrix);
+        return result;
     }
 
 }
