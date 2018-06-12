@@ -1,17 +1,46 @@
-package com.zinyakov;
+package com.zinyakov.Formatters;
+
+import com.zinyakov.Models.Matrix;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zinyakov.StringUtils.*;
+import static com.zinyakov.Constants.*;
 
-public class StringToArrayFormatter {
+public class ArgumentMatrixFormatterImpl implements ArgumentMatrixFormatter {
 
-    private static final char LEFT_BRACKET = '[';
-    private static final char RIGHT_BRACKET = ']';
-    private static final char SEPARATOR = ',';
+    StringFormatter formatter;
 
-    public static List<List<Integer>> twoDimentionalArrayForArg(String arg) {
+    public ArgumentMatrixFormatterImpl(StringFormatter formatter) {
+        this.formatter = formatter;
+    }
+
+    public Matrix twoDimentionalMatrixForArg(String arg) {
+        List<List<Integer>> array = twoDimentionalArrayForArg(arg);
+        if (array.isEmpty()) {
+            return new Matrix();
+        }
+
+        // нормализуем матрицу, заменяя пустые места в строках нулями
+        int maxLength = array.get(0).size();
+        for (List<Integer> row : array) {
+            if (row.size() > maxLength) {
+                maxLength = row.size();
+            }
+        }
+        for (List<Integer> row : array) {
+            if (row.size() < maxLength) {
+                int numberOfCellsToAdd = maxLength - row.size();
+                for (int i = 0; i < numberOfCellsToAdd; i++) {
+                    row.add(0);
+                }
+            }
+        }
+
+        return new Matrix(array);
+    }
+
+    public List<List<Integer>> twoDimentionalArrayForArg(String arg) {
         List<List<Integer>> resultList = new ArrayList<>();
         String[] stringArray = arrayFromString(arg);
         if (stringArray.length == 0) {
@@ -28,12 +57,12 @@ public class StringToArrayFormatter {
         return resultList;
     }
 
-    private static List<Integer> oneDimentionalArrayForArg(String arg) {
+    List<Integer> oneDimentionalArrayForArg(String arg) {
         List<Integer> resultMatrix = new ArrayList<Integer>();
         String[] stringArray = arrayFromString(arg);
 
         for (String string : stringArray) {
-            Integer integerValue = safeIntegerFromString(string);
+            Integer integerValue = formatter.safeIntegerFromString(string);
             if (integerValue != null) {
                 resultMatrix.add(integerValue);
             }
@@ -41,7 +70,7 @@ public class StringToArrayFormatter {
 
         // fallback, если не смогли сделать матрицу из массива, пробуем создать матрицу из аргумента как из отдельного числа
         if (resultMatrix.isEmpty()) {
-            Integer integerValue = safeIntegerFromString(arg);
+            Integer integerValue = formatter.safeIntegerFromString(arg);
             if (integerValue != null) {
                 resultMatrix.add(integerValue);
             }
@@ -51,12 +80,12 @@ public class StringToArrayFormatter {
     }
 
     // "[[1,2,3],4,5]" -> ["[1,2,3]", "4", "5"]
-    private static String[] arrayFromString(String string) {
-        if (!isAnArray(string)) {
+    String[] arrayFromString(String string) {
+        if (!formatter.isAnArray(string)) {
             return new String[]{};
         }
         List<String> resultList = new ArrayList<String>();
-        String arrayContentString = removingFirstAndLastCharacter(string);
+        String arrayContentString = formatter.removingFirstAndLastCharacter(string);
         int lastSplitIndex = -1;
         int newSplitIndex = 0;
         boolean isLoopingInInnerArray = false;
@@ -74,7 +103,7 @@ public class StringToArrayFormatter {
                 resultList.add(arrayContentString.substring(lastSplitIndex + 1, newSplitIndex));
                 lastSplitIndex = newSplitIndex;
             }
-            if (i == lastIndex(arrayContentString)) {
+            if (i == formatter.lastIndex(arrayContentString)) {
                 // так как после последнего элемента нет запятой, берем от места последнего разбиения до конца
                 resultList.add(arrayContentString.substring(lastSplitIndex + 1, arrayContentString.length()));
             }
@@ -84,28 +113,4 @@ public class StringToArrayFormatter {
         return resultList.toArray(resultArray);
     }
 
-    private static boolean isAnArray(String string) {
-        if (isNullOrEmpty(string) || !isValidBracketExpression(string)) {
-            return false;
-        }
-        boolean isValidTopLevelArray = string.charAt(0) == LEFT_BRACKET && string.charAt(lastIndex(string)) == RIGHT_BRACKET;
-        boolean isValidLowLevelExpression = isValidBracketExpression(removingFirstAndLastCharacter(string));
-
-        return isValidTopLevelArray && isValidLowLevelExpression;
-    }
-
-    private static boolean isValidBracketExpression(String string) {
-        int openCloseBracketCounter = 0;
-        for (char character : string.toCharArray()) {
-            if (character == LEFT_BRACKET) {
-                openCloseBracketCounter += 1;
-            } else if (character == RIGHT_BRACKET) {
-                openCloseBracketCounter -= 1;
-            }
-            if (openCloseBracketCounter < 0) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
