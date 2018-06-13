@@ -5,7 +5,7 @@ public enum OperationType {
     ADD("add"),
     MULTIPLY("multiply"),
     DETERMINE("determine"),
-    NONE(null);
+    NONE("");
 
     private String textValue;
 

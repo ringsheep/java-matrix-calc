@@ -1,43 +1,16 @@
 package com.zinyakov.Formatters;
 
-import com.zinyakov.Models.Matrix;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.zinyakov.Constants.*;
 
-public class ArgumentMatrixFormatterImpl implements ArgumentMatrixFormatter {
+public class ArgumentArrayFormatterImpl implements ArgumentArrayFormatter {
 
     StringFormatter formatter;
 
-    public ArgumentMatrixFormatterImpl(StringFormatter formatter) {
+    public ArgumentArrayFormatterImpl(StringFormatter formatter) {
         this.formatter = formatter;
-    }
-
-    public Matrix twoDimentionalMatrixForArg(String arg) {
-        List<List<Integer>> array = twoDimentionalArrayForArg(arg);
-        if (array.isEmpty()) {
-            return new Matrix();
-        }
-
-        // нормализуем матрицу, заменяя пустые места в строках нулями
-        int maxLength = array.get(0).size();
-        for (List<Integer> row : array) {
-            if (row.size() > maxLength) {
-                maxLength = row.size();
-            }
-        }
-        for (List<Integer> row : array) {
-            if (row.size() < maxLength) {
-                int numberOfCellsToAdd = maxLength - row.size();
-                for (int i = 0; i < numberOfCellsToAdd; i++) {
-                    row.add(0);
-                }
-            }
-        }
-
-        return new Matrix(array);
     }
 
     public List<List<Integer>> twoDimentionalArrayForArg(String arg) {
@@ -57,7 +30,7 @@ public class ArgumentMatrixFormatterImpl implements ArgumentMatrixFormatter {
         return resultList;
     }
 
-    List<Integer> oneDimentionalArrayForArg(String arg) {
+    private List<Integer> oneDimentionalArrayForArg(String arg) {
         List<Integer> resultMatrix = new ArrayList<Integer>();
         String[] stringArray = arrayFromString(arg);
 
@@ -80,7 +53,7 @@ public class ArgumentMatrixFormatterImpl implements ArgumentMatrixFormatter {
     }
 
     // "[[1,2,3],4,5]" -> ["[1,2,3]", "4", "5"]
-    String[] arrayFromString(String string) {
+    private String[] arrayFromString(String string) {
         if (!formatter.isAnArray(string)) {
             return new String[]{};
         }

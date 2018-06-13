@@ -14,9 +14,9 @@ public class Main {
 
     private static View buildView() {
         StringFormatter stringFormatter = new StringFormatterImpl();
-        ArgumentMatrixFormatter formatter = new ArgumentMatrixFormatterImpl(stringFormatter);
-        ViewModel viewModel = new ViewModelImpl();
-        return new ViewImpl(viewModel, formatter);
+        ArgumentArrayFormatter formatter = new ArgumentArrayFormatterImpl(stringFormatter);
+        ViewModel viewModel = new ViewModelImpl(formatter);
+        return new ViewImpl(viewModel);
     }
 
 }
