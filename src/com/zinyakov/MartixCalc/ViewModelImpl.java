@@ -67,4 +67,37 @@ public class ViewModelImpl implements ViewModel {
         return resultMatrix;
     }
 
+    public int determinantForMatrix(Matrix matrix) throws Exception {
+        if (matrix.numberOfRows() != matrix.numberOfColumns()) {
+            throw new Exception("you can only calculate determinant of square matrix");
+        }
+        if (matrix.numberOfRows() == 1) {
+            return matrix.getRow(0).get(0);
+        }
+        if (matrix.numberOfRows() == 2) {
+            // det[[1,2],[3,4]] = 1*4 - 2*3
+            return matrix.getRow(0).get(0) * matrix.getRow(1).get(1)
+                    - matrix.getRow(0).get(1) * matrix.getRow(1).get(0);
+        }
+
+        int determinant = 0;
+        for (int i = 0; i < matrix.numberOfRows(); i++) {
+            Integer currentElement = matrix.getRow(0).get(i);
+            Matrix minor = minorForMatrix(matrix, 0, i);
+
+            determinant += Math.pow(-1, 2+i) * currentElement * determinantForMatrix(minor);
+        }
+        return determinant;
+    }
+
+    private Matrix minorForMatrix(Matrix matrix, int rowNumber, int columnNumber) {
+        // десериализуем и сериализуем обратно массив, чтобы сделать глубокую копию вложенных массивов
+        List<List<Integer>> resultArray = new Matrix(matrix.getValue()).getValue();
+        resultArray.remove(rowNumber);
+        for (List<Integer> row : resultArray) {
+            row.remove(columnNumber);
+        }
+        return new Matrix(resultArray);
+    }
+
 }

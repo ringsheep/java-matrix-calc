@@ -10,4 +10,6 @@ public interface ViewModel {
 
     Matrix multiplicationForMatrixes(Matrix firstMatrix, Matrix secondMatrix) throws Exception;
 
+    int determinantForMatrix(Matrix matrix) throws Exception;
+
 }

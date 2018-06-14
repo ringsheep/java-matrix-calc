@@ -33,7 +33,7 @@ public class ViewImpl implements View {
 
             return resultForOperation(operationType, firstMatrix, secondMatrix);
         } catch(Exception e) {
-            return e.getMessage() + " " + e.getCause();
+            return e.getMessage();
         }
     }
 
@@ -46,10 +46,18 @@ public class ViewImpl implements View {
                 Matrix multiplicationResultMatrix = viewModel.multiplicationForMatrixes(firstMatrix, secondMatrix);
                 return twoMatrixesResultView(firstMatrix, secondMatrix, multiplicationResultMatrix);
             case DETERMINE:
-                return "not implemented yet";
+                int determinant = viewModel.determinantForMatrix(firstMatrix);
+                return singleMatrixValueView(firstMatrix, determinant);
             default:
                 return HELP_MESSAGE;
         }
+    }
+
+    private String singleMatrixValueView(Matrix matrix, int value) {
+        return "matrix" + "\n"
+                + matrixView(matrix) + "\n"
+                + "result" + "\n"
+                + value;
     }
 
     private String twoMatrixesResultView(Matrix firstMatrix, Matrix secondMatrix, Matrix resultMatrix) {
