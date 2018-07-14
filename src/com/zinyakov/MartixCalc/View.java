@@ -9,35 +9,9 @@ import static com.zinyakov.Constants.HELP_MESSAGE;
 
 public class View {
 
-    private ViewModel viewModel;
+    private ViewModel viewModel = new ViewModel();
 
-    public View(ViewModel viewModel) {
-        this.viewModel = viewModel;
-    }
-
-    public String resultViewForArgs(String[] args) {
-        Matrix firstMatrix = new Matrix();
-        Matrix secondMatrix = new Matrix();
-        OperationType operationType = OperationType.NONE;
-
-        try {
-            if (args.length >= 1) {
-                operationType = OperationType.fromString(args[0]);
-            }
-            if (args.length >= 2) {
-                firstMatrix = viewModel.matrixForArg(args[1]);
-            }
-            if (args.length >= 3) {
-                secondMatrix = viewModel.matrixForArg(args[2]);
-            }
-
-            return resultForOperation(operationType, firstMatrix, secondMatrix);
-        } catch(Exception e) {
-            return e.getMessage();
-        }
-    }
-
-    private String resultForOperation(OperationType type, Matrix firstMatrix, Matrix secondMatrix) throws Exception {
+    public String resultForOperation(OperationType type, Matrix firstMatrix, Matrix secondMatrix) throws Exception {
         switch (type) {
             case ADD:
                 Matrix additionResultMatrix = viewModel.additionForMatrixes(firstMatrix, secondMatrix);

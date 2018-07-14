@@ -7,11 +7,7 @@ import static com.zinyakov.Constants.*;
 
 public class ArgumentArrayFormatter {
 
-    StringFormatter formatter;
-
-    public ArgumentArrayFormatter(StringFormatter formatter) {
-        this.formatter = formatter;
-    }
+    private StringFormatter formatter = new StringFormatter();
 
     public List<List<Integer>> twoDimentionalArrayForArg(String arg) {
         List<List<Integer>> resultList = new ArrayList<>();

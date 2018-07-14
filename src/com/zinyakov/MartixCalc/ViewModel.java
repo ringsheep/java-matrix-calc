@@ -1,25 +1,13 @@
 package com.zinyakov.MartixCalc;
 
-import com.zinyakov.Formatters.ArgumentArrayFormatter;
 import com.zinyakov.Models.Matrix;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewModel {
+class ViewModel {
 
-    private ArgumentArrayFormatter formatter;
-
-    public ViewModel(ArgumentArrayFormatter formatter) {
-        this.formatter = formatter;
-    }
-
-    public Matrix matrixForArg(String arg) {
-        List<List<Integer>> matrixArray = formatter.twoDimentionalArrayForArg(arg);
-        return new Matrix(matrixArray);
-    }
-
-    public Matrix additionForMatrixes(Matrix firstMatrix, Matrix secondMatrix) throws Exception {
+    Matrix additionForMatrixes(Matrix firstMatrix, Matrix secondMatrix) throws Exception {
         if (firstMatrix.getValue().isEmpty() || secondMatrix.getValue().isEmpty()) {
             throw new Exception("both matrixs must not be empty");
         }
@@ -44,7 +32,7 @@ public class ViewModel {
         return new Matrix(combinedMatrixes);
     }
 
-    public Matrix multiplicationForMatrixes(Matrix firstMatrix, Matrix secondMatrix) throws Exception {
+    Matrix multiplicationForMatrixes(Matrix firstMatrix, Matrix secondMatrix) throws Exception {
         if (firstMatrix.numberOfColumns() != secondMatrix.numberOfRows()) {
             throw new Exception("number of columns in first matrix must be equal to number of rows in second one");
         }
@@ -67,7 +55,7 @@ public class ViewModel {
         return resultMatrix;
     }
 
-    public int determinantForMatrix(Matrix matrix) throws Exception {
+    int determinantForMatrix(Matrix matrix) throws Exception {
         if (matrix.numberOfRows() != matrix.numberOfColumns()) {
             throw new Exception("you can only calculate determinant of square matrix");
         }
