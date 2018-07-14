@@ -2,9 +2,7 @@ package com.zinyakov;
 
 import com.zinyakov.Formatters.*;
 import com.zinyakov.MartixCalc.View;
-import com.zinyakov.MartixCalc.ViewImpl;
 import com.zinyakov.MartixCalc.ViewModel;
-import com.zinyakov.MartixCalc.ViewModelImpl;
 
 public class Main {
 
@@ -13,10 +11,10 @@ public class Main {
     }
 
     private static View buildView() {
-        StringFormatter stringFormatter = new StringFormatterImpl();
-        ArgumentArrayFormatter formatter = new ArgumentArrayFormatterImpl(stringFormatter);
-        ViewModel viewModel = new ViewModelImpl(formatter);
-        return new ViewImpl(viewModel);
+        StringFormatter stringFormatter = new StringFormatter();
+        ArgumentArrayFormatter formatter = new ArgumentArrayFormatter(stringFormatter);
+        ViewModel viewModel = new ViewModel(formatter);
+        return new View(viewModel);
     }
 
 }
